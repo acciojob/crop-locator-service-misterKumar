@@ -16,19 +16,26 @@ public class CropLocatorController {
 
 	    public CropLocatorController(CropService cropService) {
 	    	// your code goes here
-	    
+	    	this.cropService=cropService;
 	    }
 
 	    @PostMapping("/register")
 	    public ResponseEntity<String> registerCrop(@RequestBody Crop crop) {
 	    	// your code goes here
-	        return null;
+	        cropService.addCrop(crop);
+			return ResponseEntity.status(HttpStatus.CREATED).body("Crop registered successfully!");
 	    }
 
 	    @GetMapping("/locate")
 	    public ResponseEntity<Crop> getCropByLocation(@RequestParam double latitude, @RequestParam double longitude) {
 	    	// your code goes here
-	    	return null;
+	    	Crop crop=cropService.findCropByLocation(latitude,longitude);
+			if(crop!=null){
+				return ResponseEntity.ok(crop);
+			}
+			else {
+				return ResponseEntity.notFound().build();
+			}
 	    }
 
 }
